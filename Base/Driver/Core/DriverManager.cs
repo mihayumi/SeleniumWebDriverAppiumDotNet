@@ -48,9 +48,6 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
         {
             AppiumOptions options = new AppiumOptions();
             options.AddAdditionalCapability("deviceName", "Android");
-            options.AddAdditionalCapability("deviceName", "Android");
-            options.AddAdditionalCapability("appPackage", "hbsis.wms.ambev.launcher");
-            options.AddAdditionalCapability("appActivity", "hbsis.wms.ambev.launcher.login.LoginActivity");
             options.AddAdditionalCapability("autoGrantPermissions", "true");
             options.AddAdditionalCapability("unicodeKeyboard", "false");
             options.AddAdditionalCapability("resetKeyboard", "true");

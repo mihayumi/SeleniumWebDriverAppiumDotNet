@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Git\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj": {}
+    "C:\\Git1\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj": {}
   },
   "projects": {
-    "C:\\Git\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj": {
+    "C:\\Git1\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Git\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj",
+        "projectUniqueName": "C:\\Git1\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj",
         "projectName": "SeleniumCoypuAppiumFramework",
-        "projectPath": "C:\\Git\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj",
+        "projectPath": "C:\\Git1\\SeleniumWebDriverAppiumDotNet\\SeleniumCoypuAppiumFramework.csproj",
         "packagesPath": "C:\\Users\\michelee.murai\\.nuget\\packages\\",
-        "outputPath": "C:\\Git\\SeleniumWebDriverAppiumDotNet\\obj\\",
+        "outputPath": "C:\\Git1\\SeleniumWebDriverAppiumDotNet\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
