@@ -1,13 +1,14 @@
 ﻿using NUnit.Framework;
+using SeleniumCoypuAppiumFramework.ActionKeywords;
 using SeleniumCoypuAppiumFramework.Common;
 using SeleniumCoypuAppiumFramework.Lib;
 using SeleniumCoypuAppiumFramework.Models;
-using SeleniumCoypuAppiumFramework.POM.ContactFormPage;
+using SeleniumCoypuAppiumFramework.POM;
 
 namespace SeleniumCoypuAppiumFramework.Tests
 {
     [Parallelizable(ParallelScope.All)]
-    class ContactForm : BaseTest
+    class ContactForm : BaseTestWeb
     {
         [Test]
         [Category("Smoke")]
@@ -27,13 +28,14 @@ namespace SeleniumCoypuAppiumFramework.Tests
 
             DataBase.RemoveDataBeforeTest(firstName, lastName);
 
-            ContactFormPage.Instance.AcessPageContractForm()
-                                    .Verify()
-                                        .ShouldBeHaveTitle();
+            ContactFormPage.Instance.AcessPageContractForm();
+
+            WebKeywords.Instance.WaitTitleContains("HTML contact form");
+
             ContactFormPage.Instance.FillinFields(contactFormData)
-                                    .ClickSubmit()
-                                    .Verify()
-                                        .ShouldBeHaveMessage();
+                                    .ClickSubmit();
+
+            WebKeywords.Instance.WaitTitleContains("Page not found – ToolsQA – Demo Website to Practice Automation");
         }
     }
 }

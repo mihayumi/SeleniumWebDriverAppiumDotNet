@@ -7,7 +7,7 @@ using SeleniumCoypuAppiumFramework.Base.Driver.Core;
 
 namespace SeleniumCoypuAppiumFramework.Common
 {
-    class BaseTest
+    class BaseTestWeb
     {
         [SetUp]
         public void Start()

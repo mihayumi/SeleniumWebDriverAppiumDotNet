@@ -12,6 +12,7 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
     public static class DriverManager
     {
         private static ThreadLocal<object> _driverStored = new ThreadLocal<object>();
+
         /// <summary>
         /// This method return driver base on generic TypeofDriver
         /// Ex: GetDriver<IWebDriver> will return IWebDriver
@@ -21,6 +22,7 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
         {
             return (DriverType)DriverStored;
         }
+
         /// <summary>
         /// This is use for stored driver 
         /// when running in paralell in single machine
@@ -38,6 +40,7 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
                 _driverStored.Value = value;
             }
         }
+
         /// <summary>
         /// This method is use for instance driver
         /// </summary>
@@ -76,8 +79,8 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
             options.AddArgument("--window-size=1920,1080");
             options.AddArgument("--disable-notifications");
             options.AddArgument("disable-gpu");
-            ////chromeOptions.AddAdditionalCapability(CapabilityType.Platform, "Linux");
-            ////chromeOptions.AddAdditionalCapability(CapabilityType.Version, "78.0.3904.70");
+            //options.AddAdditionalCapability(CapabilityType.Platform, "Linux");
+            //options.AddAdditionalCapability(CapabilityType.Version, "78.0.3904.70");
             options.AddUserProfilePreference("intl.accept_languages", "pt");
             options.AddUserProfilePreference("disable-popup-blocking", "true");
 
@@ -87,6 +90,7 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
 
             DriverStored = driver;
         }
+
         /// <summary>
         /// This method is use for close and destroy driver
         /// </summary>

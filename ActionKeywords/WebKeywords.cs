@@ -1,41 +1,102 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 using SeleniumCoypuAppiumFramework.Base.Driver.Core;
-using SeleniumCoypuAppiumFramework.Base.Exception;
 
 namespace SeleniumCoypuAppiumFramework.ActionKeywords
 {
     public class WebKeywords
     {
-        private static readonly WebKeywords _instance = new WebKeywords();
-        private WebKeywords()
-        {
-        }
-        static WebKeywords()
-        {
-        }
-        public static WebKeywords Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static WebKeywords Instance { get; } = new WebKeywords();
+        const int Timeout = 5;
+
         /// <summary>
-        /// This method is use for 
-        /// navigate to URL
-        /// User can use param with Uri Ex: /home/contact
+        /// Navega em uma url.
         /// </summary>
         /// <param name="url"></param>
-        public void Navigate(string url)
+        /// <returns></returns>
+        public WebKeywords Navigate(string url)
         {
             DriverManager.GetDriver<IWebDriver>().Navigate().GoToUrl(url);
+            return this;
+        }
+
+        /// <summary>
+        /// Clica no elemento.
+        /// </summary>
+        /// <param name="mappingElement"></param>
+        /// <returns></returns>
+        public WebKeywords Click(By mappingElement)
+        {
+            try
+            {
+                MappedElement(mappingElement).Click();
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Get " + e.Message + ", " + mappingElement + " is not exists");
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Digita um valor em um elemento.
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <param name="mappingElement"></param>
+        /// <returns></returns>
+        public WebKeywords SendKeys(string valor, By mappingElement)
+        {
+            try
+            {
+                MappedElement(mappingElement).SendKeys(valor);
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Get " + e.Message + ", " + mappingElement + " is not exists");
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Limpa e digita um valor no elemento.
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <param name="mappingElement"></param>
+        /// <returns></returns>
+        public WebKeywords ClearAndSendKeys(string valor, By mappingElement)
+        {
+            try
+            {
+                MappedElement(mappingElement).Clear();
+                MappedElement(mappingElement).SendKeys(valor);
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Element " + mappingElement + " is not enable for set text " + e.Message + ".");
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Retorna o texto do elemento.
+        /// </summary>
+        /// <param name="mappingElement"></param>
+        /// <returns></returns>
+        public WebKeywords GetText(By mappingElement)
+        {
+            try
+            {
+                var result = MappedElement(mappingElement).Text;
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Element " + mappingElement + " is not enable for get text " + e.Message + ".");
+            }
+            return this;
         }
 
         /// <summary>
@@ -71,74 +132,16 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
                     throw new Exception("Get error in using Selected");
             }
         }
-        /// <summary>
-        /// This method use for 
-        /// click 
-        /// </summary>
-        /// <param name="element"></param>
-        public void Click(IWebElement element)
-        {
-            Actions _action = new Actions(DriverManager.GetDriver<IWebDriver>());
-            _action.MoveToElement(element).Build().Perform();
-            element.Click();
-        }
-        /// <summary>
-        /// This method user for 
-        /// enter text 
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="text"></param>
-        public void SetText(IWebElement element, string text)
-        {
-            try
-            {
-                element.Clear();
-                element.SendKeys(text);
-            }
-            catch (WebDriverException e)
-            {
-                throw new StepErrorException("Element is not enable for set text" + "\r\n" + "error: " + e.Message);
-            }
-
-        }
 
         /// <summary>
-        /// This method use for 
-        /// wait element ready to click 
+        /// Espera até que o elemento fique visível e mapeia.
         /// </summary>
-        /// <param name="locatorValue"></param>
-        /// <param name="timeOut"></param>
-        [Obsolete]
-        public void WaitElementToBeClickable(By locatorValue, int timeOut)
+        /// <param name="mappingElement"></param>
+        public IWebElement MappedElement(By mappingElement)
         {
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(timeOut));
-                wait.Until(ExpectedConditions.ElementToBeClickable(locatorValue));
-            }
-            catch (WebDriverTimeoutException e)
-            {
-                throw new OperationCanceledException("Get " + e.Message + ", " + locatorValue + " is not ready for clickable");
-            }
-        }
-
-        /// <summary>
-        /// This method use for 
-        /// wait element visible on DOM
-        /// </summary>
-        /// <param name="locatorValue"></param>
-        /// <param name="timeOut"></param>
-        public void WaitElementVisible(By locatorValue, int timeOut)
-        {
-            try
-            {
-                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(timeOut));
-                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(locatorValue));
-            }
-            catch (WebDriverTimeoutException e)
-            {
-                throw new OperationCanceledException("Get " + e.Message + ", " + locatorValue + " is not visible");
-            }
+            WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(Timeout));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(mappingElement));
+            return DriverManager.GetDriver<IWebDriver>().FindElement(mappingElement);
         }
 
         /// <summary>
@@ -147,11 +150,11 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         /// </summary>
         /// <param name="title"></param>
         /// <param name="timeOut"></param>
-        public void WaitTitleContains(string title, int timeOut)
+        public void WaitTitleContains(string title)
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(timeOut));
+                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(Timeout));
                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TitleContains(title));
             }
             catch (WebDriverTimeoutException e)
@@ -159,6 +162,7 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
                 throw new OperationCanceledException("Get " + e.Message + ", [" + title + "] is not displayed in WebPage title [" + DriverManager.GetDriver<IWebDriver>().Title + "]");
             }
         }
+
         /// <summary>
         /// This method use for 
         /// get attribute of element in DOM
@@ -170,6 +174,7 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         {
             return element.GetAttribute(attribute);
         }
+
         /// <summary>
         /// This method use for Driver title of page
         /// </summary>
@@ -178,6 +183,7 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         {
             return DriverManager.GetDriver<IWebDriver>().Title;
         }
+
         /// <summary>
         /// This method is use for
         /// return value of css
@@ -189,6 +195,37 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         {
             return element.GetCssValue(value);
         }
+
+        /// <summary>
+        /// Limpa o elemento.
+        /// </summary>
+        /// <param name="element"></param>
+        public WebKeywords Clear(By mappingElement)
+        {
+            MappedElement(mappingElement).Clear();
+            return this;
+        }
+
+        /// <summary>
+        /// Tira um print e salva na pasta Report.
+        /// </summary>
+        public void GetScreenShot()
+        {
+            ITakesScreenshot camera = DriverManager.GetDriver<IWebDriver>() as ITakesScreenshot;
+            Screenshot foto = camera.GetScreenshot();
+
+            var resultId = TestContext.CurrentContext.Test.ID;
+
+            string path = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug", "");
+            string artifactDirectory = path + "Report\\";
+            if (!Directory.Exists(artifactDirectory))
+                Directory.CreateDirectory(artifactDirectory);
+
+            foto.SaveAsFile(artifactDirectory + resultId + ".png", ScreenshotImageFormat.Png);
+
+            TestContext.AddTestAttachment(artifactDirectory + resultId + ".png");
+        }
+
         /// <summary>
         /// This method is use for
         /// return source code of current page
@@ -198,6 +235,7 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         {
             return DriverManager.GetDriver<IWebDriver>().PageSource;
         }
+
         /// <summary>
         /// This method use for 
         /// wait page load completed
@@ -233,6 +271,7 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
                 }
             });
         }
+
         /// <summary>
         /// This method use for
         /// set attribute of element
@@ -251,124 +290,6 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
             if (javascript == null)
                 throw new ArgumentException("element", "Element must wrap a web driver that supports javascript execution");
             javascript.ExecuteScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, attributeName, value);
-        }
-        /// <summary>
-        /// This method use for 
-        /// clear any text on text field
-        /// </summary>
-        /// <param name="element"></param>
-        public void ClearText(IWebElement element)
-        {
-            element.Clear();
-        }
-        /// <summary>
-        /// This method is use for
-        /// Execute javascript
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <returns></returns>
-        public IJavaScriptExecutor JavaScript(IWebDriver driver)
-        {
-            return (IJavaScriptExecutor)driver;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public void GetScreenShot()
-        {
-            ITakesScreenshot camera = DriverManager.GetDriver<IWebDriver>() as ITakesScreenshot;
-            Screenshot foto = camera.GetScreenshot();
-
-            var resultId = TestContext.CurrentContext.Test.ID;
-
-            string path = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug", "");
-            string artifactDirectory = path + "Report\\";
-            if (!Directory.Exists(artifactDirectory))
-                Directory.CreateDirectory(artifactDirectory);
-
-            foto.SaveAsFile(artifactDirectory + resultId + ".png", ScreenshotImageFormat.Png);
-
-            TestContext.AddTestAttachment(artifactDirectory + resultId + ".png");
-        }
-
-        /// <summary>
-        /// This method is use for
-        /// return element
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public IWebElement FindElement(string value)
-        {
-            IWebElement element = null;
-            string LocatorType = value.Split(';')[0];
-            string LocatorValue = value.Split(';')[1];
-            switch (LocatorType.ToLower())
-            {
-                case "id":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.Id(LocatorValue));
-                    break;
-                case "name":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.Name(LocatorValue));
-                    break;
-                case "xpath":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.XPath(LocatorValue));
-                    break;
-                case "tag":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.TagName(LocatorValue));
-                    break;
-                case "link":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.LinkText(LocatorValue));
-                    break;
-                case "css":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.CssSelector(LocatorValue));
-                    break;
-                case "class":
-                    element = DriverManager.GetDriver<IWebDriver>().FindElement(By.ClassName(LocatorValue));
-                    break;
-                default:
-                    throw new ArgumentException("Support FindElement with 'id' 'name' 'xpath' 'tag' 'link' 'css' 'class'");
-            }
-            return element;
-        }
-        /// <summary>
-        /// This method is use for
-        /// return elements in list
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public ReadOnlyCollection<IWebElement> FindElements(string value)
-        {
-            ReadOnlyCollection<IWebElement> elements = null;
-            string LocatorType = value.Split(';')[0];
-            string LocatorValue = value.Split(';')[1];
-            switch (LocatorType.ToLower())
-            {
-                case "id":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.Id(LocatorValue));
-                    break;
-                case "name":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.Name(LocatorValue));
-                    break;
-                case "xpath":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.XPath(LocatorValue));
-                    break;
-                case "tag":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.TagName(LocatorValue));
-                    break;
-                case "link":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.LinkText(LocatorValue));
-                    break;
-                case "css":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.CssSelector(LocatorValue));
-                    break;
-                case "class":
-                    elements = DriverManager.GetDriver<IWebDriver>().FindElements(By.ClassName(LocatorValue));
-                    break;
-                default:
-                    throw new ArgumentException("Support FindElement with 'id' 'name' 'xpath' 'tag' 'link' 'css' 'class'");
-            }
-            return elements;
         }
     }
 }
