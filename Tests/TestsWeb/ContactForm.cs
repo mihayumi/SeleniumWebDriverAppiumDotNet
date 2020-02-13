@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SeleniumCoypuAppiumFramework.ActionKeywords;
 using SeleniumCoypuAppiumFramework.Common;
 using SeleniumCoypuAppiumFramework.Lib;
 using SeleniumCoypuAppiumFramework.Models;
@@ -28,14 +27,10 @@ namespace SeleniumCoypuAppiumFramework.Tests
 
             DataBase.RemoveDataBeforeTest(firstName, lastName);
 
-            ContactFormPage.Instance.AcessPageContractForm();
-
-            WebKeywords.Instance.WaitTitleContains("HTML contact form");
-
-            ContactFormPage.Instance.FillinFields(contactFormData)
+            ContactFormPage.Instance.AcessPageContractForm()
+                                    .FillinFields(contactFormData)
                                     .ClickSubmit();
-
-            WebKeywords.Instance.WaitTitleContains("Page not found – ToolsQA – Demo Website to Practice Automation");
+            Assert.AreEqual(ContactFormPage.Instance.GetTextResult(), "Oops! That page can’t be found.");
         }
     }
 }

@@ -111,3 +111,4 @@ C:\Git1\SeleniumWebDriverAppiumDotNet\obj\Debug\netcoreapp3.0\SeleniumCoypuAppiu
 C:\Git1\SeleniumWebDriverAppiumDotNet\obj\Debug\netcoreapp3.0\SeleniumCoypuAppiumFramework.csproj.CopyComplete
 C:\Git1\SeleniumWebDriverAppiumDotNet\obj\Debug\netcoreapp3.0\SeleniumCoypuAppiumFramework.dll
 C:\Git1\SeleniumWebDriverAppiumDotNet\obj\Debug\netcoreapp3.0\SeleniumCoypuAppiumFramework.pdb
+C:\Git1\SeleniumWebDriverAppiumDotNet\obj\Debug\netcoreapp3.0\SeleniumCoypuAppiumFramework.csprojAssemblyReference.cache

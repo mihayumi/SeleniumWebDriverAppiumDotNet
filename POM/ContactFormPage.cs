@@ -15,12 +15,14 @@ namespace SeleniumCoypuAppiumFramework.POM
         By CountrySelect = By.Name("country");
         By SubjectField = By.Id("subject");
         By SubmitButton = By.CssSelector("input[value='Submit']");
+        By TextResult = By.CssSelector(".page-title");
         #endregion
 
         public ContactFormPage AcessPageContractForm()
         {
             WebKeywords.Instance.Navigate("https://demoqa.com")
-                                .Click(ContactFormMenu);
+                                .Click(ContactFormMenu)
+                                .WaitTitleContains("HTML contact form");
             return this;
         }
 
@@ -37,6 +39,12 @@ namespace SeleniumCoypuAppiumFramework.POM
         {
             WebKeywords.Instance.Click(SubmitButton);
             return this;
+        }
+
+        public string GetTextResult()
+        {
+            var result = WebKeywords.Instance.GetText(TextResult);
+            return result;
         }
     }
 }

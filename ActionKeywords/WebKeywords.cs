@@ -86,17 +86,17 @@ namespace SeleniumCoypuAppiumFramework.ActionKeywords
         /// </summary>
         /// <param name="mappingElement"></param>
         /// <returns></returns>
-        public WebKeywords GetText(By mappingElement)
+        public string GetText(By mappingElement)
         {
             try
             {
                 var result = MappedElement(mappingElement).Text;
+                return result;
             }
             catch (WebDriverTimeoutException e)
             {
                 throw new OperationCanceledException("Element " + mappingElement + " is not enable for get text " + e.Message + ".");
             }
-            return this;
         }
 
         /// <summary>
