@@ -42,11 +42,8 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
         }
 
         /// <summary>
-        /// This method is use for instance driver
-        /// </summary>
-        /// <param name="factoryType"></param>
-        /// <param name="type"></param>
-        /// <param name="configuaration"></param>     
+        /// Instancia o Android Driver
+        /// </summary>  
         public static void StartDriverAndroid()
         {
             AppiumOptions options = new AppiumOptions();
@@ -70,29 +67,30 @@ namespace SeleniumCoypuAppiumFramework.Base.Driver.Core
             DriverStored = driver;
         }
 
+        /// <summary>
+        /// Instancia o Chrome Driver
+        /// </summary>  
         public static void StartDriverChrome()
         {
             ChromeOptions options = new ChromeOptions();
             options.LeaveBrowserRunning = true;
             options.AddArgument("--test-type");
-            options.AddArgument("--headless");
-            options.AddArgument("--window-size=1920,1080");
+            //options.AddArgument("--headless");
+            options.AddArgument("--start-maximized");
+            //options.AddArgument("--window-size=1920,1080");
             options.AddArgument("--disable-notifications");
             options.AddArgument("disable-gpu");
             //options.AddAdditionalCapability(CapabilityType.Platform, "Linux");
             //options.AddAdditionalCapability(CapabilityType.Version, "78.0.3904.70");
-            options.AddUserProfilePreference("intl.accept_languages", "pt");
-            options.AddUserProfilePreference("disable-popup-blocking", "true");
+            //options.AddUserProfilePreference("intl.accept_languages", "pt");
+            //options.AddUserProfilePreference("disable-popup-blocking", "true");
 
             IWebDriver driver = new ChromeDriver(options);
-            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
             DriverStored = driver;
         }
 
         /// <summary>
-        /// This method is use for close and destroy driver
+        /// Fecha e destrói o driver
         /// </summary>
         public static void CloseDriver()
         {

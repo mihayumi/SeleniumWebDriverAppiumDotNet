@@ -1,13 +1,11 @@
 ﻿using System;
-using System.IO;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using SeleniumCoypuAppiumFramework.ActionKeywords;
 using SeleniumCoypuAppiumFramework.Base.Driver.Core;
 
 namespace SeleniumCoypuAppiumFramework.Common
 {
-    class BaseTestWeb
+    public class BaseTestWeb
     {
         [SetUp]
         public void Start()
@@ -20,7 +18,7 @@ namespace SeleniumCoypuAppiumFramework.Common
         {
             try
             {
-                WebKeywords.Instance.GetScreenShot();
+                WebKeyWords.Instance.GetScreenShot();
             }
             catch(Exception e)
             {
