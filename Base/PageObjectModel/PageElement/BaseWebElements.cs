@@ -1,19 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OpenQA.Selenium;
-using SeleniumCoypuAppiumFramework.ActionKeywords;
+using OpenQA.Selenium.Support.UI;
+using SeleniumCoypuAppiumFramework.Base.Driver.Core;
 
 namespace SeleniumCoypuAppiumFramework.Base.PageObjectModel.PageElement
 {
-    public class BaseWebElements
+    public class BaseWebElements 
     {
-        public IWebElement MappingElement(By element)
+        public IList<IWebElement> MappedElements(By mappingElements)
         {
-            return WebKeyWords.Instance.MappedElement(element);
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(15));
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(mappingElements));
+                return DriverManager.GetDriver<IWebDriver>().FindElements(mappingElements);
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Não foi possível mapear o elemento: " + mappingElements + " , " + e.Message + ".");
+            }
         }
 
-        public IList<IWebElement> MappingElements(By element)
+        public IWebElement MappingElement(By mappingElement)
         {
-            return WebKeyWords.Instance.MappedElements(element);
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(DriverManager.GetDriver<IWebDriver>(), TimeSpan.FromSeconds(15));
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(mappingElement));
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(mappingElement));
+                IWebElement Element = DriverManager.GetDriver<IWebDriver>().FindElement(mappingElement);
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(Element));
+                return DriverManager.GetDriver<IWebDriver>().FindElement(mappingElement);
+            }
+            catch (WebDriverTimeoutException e)
+            {
+                throw new OperationCanceledException("Não foi possível mapear o elemento: " + mappingElement + " , " + e.Message + ".");
+            }
         }
     }
 }

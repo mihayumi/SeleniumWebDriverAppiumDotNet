@@ -36,13 +36,15 @@ namespace SeleniumCoypuAppiumFramework.Tests
             };
 
             DataBase.RemoveDataBeforeTest(firstName, lastName);
+            
+            var contactPage = Resolve<IContactFormPage>();
 
-            ContactFormPage.Instance
+            contactPage
                 .AcessPageContractForm()
                 .FillinFields(contactFormData)
                 .ClickSubmit();
 
-            Assert.AreEqual("Oops! That page can’t be found.", ContactFormPage.Instance.GetTextResult());
+            Assert.AreEqual("Oops! That page can’t be found.", contactPage.GetTextResult());
         }
     }
 }

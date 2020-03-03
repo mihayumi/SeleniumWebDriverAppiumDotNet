@@ -3,14 +3,18 @@ using SeleniumCoypuAppiumFramework.Models;
 
 namespace SeleniumCoypuAppiumFramework.POM.ContactFormPage
 {
-    class ContactFormPage : ContactFormElement
+    class ContactFormPage : ContactFormElement, IContactFormPage
     {
-        public static ContactFormPage Instance { get; } = new ContactFormPage();
+        private readonly IWebKeyWords _webKeyWords;
+        public ContactFormPage(IWebKeyWords webKeyWords)
+        {
+            _webKeyWords = webKeyWords;
+        }
 
         public ContactFormPage AcessPageContractForm()
         {
             ContactFormMenu.Click();
-            WebKeyWords.Instance.WaitTitleContains("HTML contact form");
+            _webKeyWords.WaitTitleContains("HTML contact form");
             return this;
         }
 
