@@ -18,7 +18,7 @@ namespace SeleniumCoypuAppiumFramework.Base.PageObjectModel.PageElement
             }
             catch (WebDriverTimeoutException e)
             {
-                throw new OperationCanceledException("Não foi possível mapear o elemento: " + mappingElements + " , " + e.Message + ".");
+                throw new OperationCanceledException("Não foi possível mapear os elementos: " + mappingElements + " , " + e.Message + ".");
             }
         }
 
