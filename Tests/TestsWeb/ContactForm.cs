@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Configuration;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using SeleniumCoypuAppiumFramework.Base.Driver.Core;
 using SeleniumCoypuAppiumFramework.Common;

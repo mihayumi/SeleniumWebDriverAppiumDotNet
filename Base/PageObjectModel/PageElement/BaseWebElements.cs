@@ -8,7 +8,7 @@ namespace SeleniumCoypuAppiumFramework.Base.PageObjectModel.PageElement
 {
     public class BaseWebElements 
     {
-        public IList<IWebElement> MappedElements(By mappingElements)
+        public IList<IWebElement> FindAsyncElements(By mappingElements)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace SeleniumCoypuAppiumFramework.Base.PageObjectModel.PageElement
             }
         }
 
-        public IWebElement MappingElement(By mappingElement)
+        public IWebElement FindAsyncElement(By mappingElement)
         {
             try
             {
